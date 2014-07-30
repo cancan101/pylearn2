@@ -55,6 +55,10 @@ def ensure_tables():
         import tables
 
 
+def _contains_nan(x):
+    return np.isnan(np.min(x))
+
+
 class DenseDesignMatrix(Dataset):
     """
     A class for representing datasets that can be stored as a dense design
@@ -796,7 +800,7 @@ class DenseDesignMatrix(Dataset):
             training examples.
         axes : WRITEME
         """
-        assert not np.any(np.isnan(V))
+        assert not _contains_nan((V))
         rows = V.shape[axes.index(0)]
         cols = V.shape[axes.index(1)]
         channels = V.shape[axes.index('c')]
@@ -807,7 +811,7 @@ class DenseDesignMatrix(Dataset):
         # will be used only when self.iterator is called without a
         # data_specs, and with "topo=True", which is deprecated.
         self.X_topo_space = self.view_converter.topo_space
-        assert not np.any(np.isnan(self.X))
+        assert not _contains_nan((self.X))
 
         # Update data specs
         X_space = VectorSpace(dim=self.X.shape[1])
@@ -872,7 +876,7 @@ class DenseDesignMatrix(Dataset):
             WRITEME
         """
         assert len(X.shape) == 2
-        assert not np.any(np.isnan(X))
+        assert not _contains_nan((X))
         self.X = X
 
     def get_targets(self):
@@ -1188,7 +1192,7 @@ class DenseDesignMatrixPyTables(DenseDesignMatrix):
             WRITEME
         """
         assert len(X.shape) == 2
-        assert not np.any(np.isnan(X))
+        assert not _contains_nan((X))
         DenseDesignMatrixPyTables.fill_hdf5(file_handle=self.h5file,
                                             data_x=X,
                                             start=start)
@@ -1212,14 +1216,14 @@ class DenseDesignMatrixPyTables(DenseDesignMatrix):
             WRITEME
         start : WRITEME
         """
-        assert not np.any(np.isnan(V))
+        assert not _contains_nan((V))
         rows = V.shape[axes.index(0)]
         cols = V.shape[axes.index(1)]
         channels = V.shape[axes.index('c')]
         self.view_converter = DefaultViewConverter([rows, cols, channels],
                                                    axes=axes)
         X = self.view_converter.topo_view_to_design_mat(V)
-        assert not np.any(np.isnan(X))
+        assert not _contains_nan((X))
         DenseDesignMatrixPyTables.fill_hdf5(file_handle=self.h5file,
                                             data_x=X,
                                             start=start)
