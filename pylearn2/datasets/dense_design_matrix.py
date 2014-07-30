@@ -1412,10 +1412,13 @@ class DefaultViewConverter(object):
             WRITEME
         """
 
-        V = V.transpose(self.axes.index('b'),
-                        self.axes.index(0),
-                        self.axes.index(1),
-                        self.axes.index('c'))
+        if (self.axes.index('b'), self.axes.index(0), self.axes.index(1), self.axes.index('c')) == (0, 1, 2, 3):
+            pass
+        else:
+            V = V.transpose(self.axes.index('b'),
+                            self.axes.index(0),
+                            self.axes.index(1),
+                            self.axes.index('c'))
 
         num_channels = self.shape[-1]
         if np.any(np.asarray(self.shape) != np.asarray(V.shape[1:])):
