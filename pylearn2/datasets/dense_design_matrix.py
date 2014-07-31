@@ -1413,10 +1413,8 @@ class DefaultViewConverter(object):
         """
 
         transpose_target = (self.axes.index('b'), self.axes.index('c'), self.axes.index(0), self.axes.index(1))
-        if transpose_target == (0, 1, 2, 3):
-            pass
-        else:
-            V = V.transpose(*transpose_target)
+        V = V.transpose(*transpose_target)
+            
 
         num_channels = self.shape[-1]
         if np.any(np.asarray(self.shape) != np.asarray(V.shape[2:] + (V.shape[1],))):
@@ -1425,13 +1423,6 @@ class DefaultViewConverter(object):
                              ' given tensor of shape ' + str(V.shape))
         batch_size = V.shape[0]
 
-        # rval = np.zeros((batch_size, self.pixels_per_channel * num_channels),
-        #                 dtype=V.dtype)
-        #
-        # for i in xrange(num_channels):
-        #     ppc = self.pixels_per_channel
-        #     rval[:, i * ppc:(i + 1) * ppc] = V[..., i].reshape(batch_size, ppc)
-        # assert rval.dtype == V.dtype
         rval = V.reshape((batch_size, self.pixels_per_channel * num_channels))
 
         return rval
