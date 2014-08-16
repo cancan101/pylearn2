@@ -131,7 +131,13 @@ def plot_monitor(model_paths=[], options_out=None, show_codes=None, x_axis='exam
         # plot
         prompt = len(channels.values()) > 1
         if show_codes:
-            final_codes = show_codes
+            show_codes_new = []
+            for show_code in show_codes:
+                if '*' in show_code:
+                    show_codes_new += [show_code.replace('*', m) for m in model_names]
+                else:
+                    show_codes_new.append(show_code)
+            final_codes = show_codes_new
         elif prompt:
 
             # Display the codebook
