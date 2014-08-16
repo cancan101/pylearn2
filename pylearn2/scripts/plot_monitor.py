@@ -76,7 +76,7 @@ def main():
 
     plot_monitor(model_paths, options_out)
 
-def plot_monitor(model_paths=[], options_out=None, show_codes=None, x_axis='example'):
+def plot_monitor(model_paths=[], options_out=None, show_codes=None, x_axis='example', shorten_file_names=True):
     if options_out is not None:
       import matplotlib
       matplotlib.use('Agg')
@@ -85,7 +85,8 @@ def plot_monitor(model_paths=[], options_out=None, show_codes=None, x_axis='exam
     print('generating names...')
     model_names = [model_path.replace('.pkl', '!') for model_path in
             model_paths]
-    model_names = unique_substrings(model_names, min_size=10)
+    if shorten_file_names:
+        model_names = unique_substrings(model_names, min_size=10)
     model_names = [model_name.replace('!','') for model_name in
             model_names]
     print('...done')
