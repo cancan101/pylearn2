@@ -54,7 +54,7 @@ def make_argument_parser():
                         help='Output variable type (int/float)')
     return parser
 
-def predict(model_path, test_path, output_path, predictionType="classification", outputType="int"):
+def predict(model_path, test_path, output_path, predictionType="classification", outputType="int", headers=False, cast_to_float32=False, first_col_label=False):
     """
     Predict from a pkl file.
 
@@ -95,7 +95,14 @@ def predict(model_path, test_path, output_path, predictionType="classification",
 
     # x is a numpy array
     # x = pickle.load(open(test_path, 'rb'))
-    x = np.loadtxt(test_path, delimiter=',') # no labels in the file
+    skiprows = 1 if headers else 0
+    x = np.loadtxt(test_path, delimiter=',', skiprows=skiprows) # no labels in the file
+
+    if cast_to_float32:
+        x = x.astype(np.float32)
+
+    if first_col_label:
+        x = x[:,1:]
 
     y = f(x)
 
