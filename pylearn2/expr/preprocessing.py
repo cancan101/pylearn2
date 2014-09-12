@@ -14,7 +14,7 @@ import numpy
 
 
 def global_contrast_normalize(X, scale=1., subtract_mean=True, use_std=False,
-                              sqrt_bias=0., min_divisor=1e-8):
+                              sqrt_bias=0., min_divisor=1e-8, normalize=True):
     """
     Global contrast normalizes by (optionally) subtracting the mean
     across features and then normalizes by either the vector norm
@@ -73,6 +73,9 @@ def global_contrast_normalize(X, scale=1., subtract_mean=True, use_std=False,
         X = X - mean[:, numpy.newaxis]  # Makes a copy.
     else:
         X = X.copy()
+
+    if not normalize:
+        return X
 
     if use_std:
         # ddof=1 simulates MATLAB's var() behaviour, which is what Adam

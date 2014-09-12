@@ -1114,7 +1114,7 @@ class GlobalContrastNormalization(Preprocessor):
 
     def __init__(self, subtract_mean=True,
                  scale=1., sqrt_bias=0., use_std=False, min_divisor=1e-8,
-                 batch_size=None):
+                 batch_size=None, normalize=True):
         self._subtract_mean = subtract_mean
         self._use_std = use_std
         self._sqrt_bias = sqrt_bias
@@ -1124,6 +1124,7 @@ class GlobalContrastNormalization(Preprocessor):
             batch_size = int(batch_size)
             assert batch_size > 0, "batch_size must be positive"
         self._batch_size = batch_size
+        self._normalize = normalize
 
     def apply(self, dataset, can_fit=False):
         """
@@ -1137,7 +1138,8 @@ class GlobalContrastNormalization(Preprocessor):
                                           subtract_mean=self._subtract_mean,
                                           use_std=self._use_std,
                                           sqrt_bias=self._sqrt_bias,
-                                          min_divisor=self._min_divisor)
+                                          min_divisor=self._min_divisor,
+                                          normalize=self._normalize)
             dataset.set_design_matrix(X)
         else:
             data = dataset.get_design_matrix()
@@ -1154,7 +1156,9 @@ class GlobalContrastNormalization(Preprocessor):
                     subtract_mean=self._subtract_mean,
                     use_std=self._use_std,
                     sqrt_bias=self._sqrt_bias,
-                    min_divisor=self._min_divisor)
+                    min_divisor=self._min_divisor,
+                    normalize=self._normalize)
+
                 dataset.set_design_matrix(X, start=i)
 
 
