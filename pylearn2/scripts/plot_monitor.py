@@ -19,6 +19,7 @@ __email__ = "pylearn-dev@googlegroups"
 import gc
 import numpy as np
 import sys
+import os
 
 from pylearn2.utils import serial
 from theano.printing import _TagGenerator
@@ -292,6 +293,9 @@ def plot_monitor(model_paths=[], options_out=None, show_codes=None, x_axis='exam
         fig.subplots_adjust(bottom=0.11 + 0.046 * len(final_codes))
 
         if options_out is None:
+          if len(model_paths) == 1:
+            model_file_name = os.path.split(model_paths[0])[-1]
+            plt.title(model_file_name)
           plt.show()
         else:
           plt.savefig(options_out)
