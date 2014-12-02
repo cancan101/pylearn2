@@ -34,6 +34,7 @@ from theano.compat.six.moves import xrange
 from theano.compat.six.moves import zip as izip
 from theano.sandbox import cuda
 from theano import tensor as T
+from theano import config
 
 from pylearn2.compat import OrderedDict
 from pylearn2.linear.matrixmul import MatrixMul
@@ -469,6 +470,7 @@ class Maxout(Layer):
                                  ('range_x.max_u', v_range.max()),
                                  ('range_x.mean_u', v_range.mean()),
                                  ('range_x.min_u', v_range.min()),
+                                 ('range_x.count0', T.eq(v_range, 0.0).sum().astype(config.floatX)),
                                  ('mean_x.max_u', v_mean.max()),
                                  ('mean_x.mean_u', v_mean.mean()),
                                  ('mean_x.min_u', v_mean.min())]:

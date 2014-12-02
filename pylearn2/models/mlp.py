@@ -2158,6 +2158,7 @@ class Linear(Layer):
             rval['range_x_max_u'] = rg.max()
             rval['range_x_mean_u'] = rg.mean()
             rval['range_x_min_u'] = rg.min()
+            rval['range_x_count0'] = T.eq(rg, 0.0).sum().astype(config.floatX)
 
             rval['max_x_max_u'] = mx.max()
             rval['max_x_mean_u'] = mx.mean()
@@ -2628,6 +2629,7 @@ class ConvNonlinearity(object):
         rval['range_x_max_u'] = rg.max()
         rval['range_x_mean_u'] = rg.mean()
         rval['range_x_min_u'] = rg.min()
+        rval['range_x_count0'] = T.eq(rg.max(axis=[1, 2]), 0.0).sum().astype(config.floatX)
 
         rval['max_x_max_u'] = mx.max()
         rval['max_x_mean_u'] = mx.mean()
