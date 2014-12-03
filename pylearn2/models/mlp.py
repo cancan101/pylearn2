@@ -2863,6 +2863,7 @@ class ConvNonlinearity(object):
         rval['range_x_mean_u'] = rg.mean()
         rval['range_x_min_u'] = rg.min()
         rval['range_x_count0'] = T.eq(rg, 0.0).sum().astype(config.floatX)
+        rval['range_x_count0_2'] = T.eq(rg.max(axis=[0, 1]), 0.0).sum().astype(config.floatX)
 
         rval['max_x_max_u'] = mx.max()
         rval['max_x_mean_u'] = mx.mean()
